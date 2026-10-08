@@ -5,15 +5,30 @@ __pycache__/
 *.pyc
 .DS_Store
 
-# Personal data: never commit resumes or CVs
-**/resume*
-**/Resume*
-**/RESUME*
-**/cv.*
-**/CV.*
-**/curriculum*
+# Personal files. Every document format, anything named like a resume or CV,
+# and every guide.json are ignored by default; only the fictional example and
+# the tooling below are re-included.
+**/*.pdf
+**/*.doc
+**/*.docx
+**/*.odt
+**/*.rtf
+**/*.pages
+**/*.txt
+**/guide.json
+**/*resume*
+**/*Resume*
+**/*RESUME*
+**/*cv*
+**/*CV*
+**/*Cv*
+**/*curriculum*
+**/*Curriculum*
+**/*CURRICULUM*
 !scripts/resume_text.py
 !examples/fictional/resume.md
+!examples/fictional/guide.json
+!**/requirements*.txt
 
 # Working folders and generated pages
 work/

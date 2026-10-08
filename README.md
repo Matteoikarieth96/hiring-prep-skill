@@ -103,7 +103,8 @@ Open the page with `#demo` at the end of the URL to see the quiz with two questi
 
 ## Security and privacy, in short
 
-- Your resume stays on your machine. Contact details are stripped before use, never sent to search engines or research subagents, and the validator rejects email addresses and phone numbers anywhere in the guide.
+- Your resume is not uploaded to search engines, job boards or research agents. It is read locally and its contact details are stripped first; the redacted text is then processed by your AI model provider as part of the conversation, like anything else you share with Claude. The skill fetches everything it needs from the web before it reads the resume, and uses no network tools afterwards except the private publish you ask for.
+- The validator rejects contact details anywhere in the guide (email addresses, also obfuscated or split by markup, phone numbers, street addresses, dates of birth, tax codes, personal LinkedIn links) and warns on @handles and ENS names.
 - Everything fetched (web pages, job posts, PDFs) is treated as data. Instructions found inside it are ignored and reported to you.
 - The page escapes all text, renders the quiz with `textContent` only, allows only `http`/`https` links (with `rel="noopener noreferrer"`), embeds a Content-Security-Policy with hashes of its own script and style (for local files; omitted with `--no-csp` when a page host sandboxes it), and stores progress only in your browser.
 - Output paths and slugs are validated; the build refuses to write outside the output folder.

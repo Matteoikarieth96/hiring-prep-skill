@@ -21,7 +21,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from guide_lib import (  # noqa: E402
     BAD_SCHEME_RE,
     DASH_RE,
-    DOB_RE,
     ISO_DATE_RE,
     LETTERS,
     MD_LINK_RE,
@@ -30,13 +29,14 @@ from guide_lib import (  # noqa: E402
     SLUG_RE,
     SOURCE_ID_RE,
     as_paragraphs,
-    contact_hits,
     final_mcqs,
     is_safe_url,
     iter_strings,
     letter_counts,
     load_guide,
+    plain_text,
 )
+from personal_data import detect as detect_personal_data  # noqa: E402
 
 REQUIRED_TOP = ("meta", "tldr", "overview", "qa", "playbook", "exam", "sources")
 COUNT_KEYS = ("tldr", "qa", "open", "mcq")
@@ -508,10 +508,20 @@ def check_text_rules(rep: Report, guide: Any) -> None:
     for path, s in iter_strings(guide):
         if DASH_RE.search(s):
             rep.err(path, "contains an em or en dash; use a comma, colon or parentheses")
-        for kind in contact_hits(s):
-            rep.err(path, f"looks like an {kind}: contact details must never appear in the guide")
-        if DOB_RE.search(s):
-            rep.warn(path, "mentions a date of birth: remove personal data")
+        # Scan the raw string and what the reader will see once markup is
+        # rendered (so **@** or `@` cannot split an address and hide it).
+        errs: List[str] = []
+        warns: List[str] = []
+        # A third variant drops markup characters outright: "name*@*mail.example"
+        # is not valid markup, but a reader still sees the address.
+        for variant in (s, plain_text(s), s.replace("*", "").replace("`", "")):
+            e, w = detect_personal_data(variant)
+            errs += [k for k in e if k not in errs]
+            warns += [k for k in w if k not in warns]
+        for kind in errs:
+            rep.err(path, f"contains personal data ({kind}): contact details must never appear in the guide")
+        for kind in warns:
+            rep.warn(path, f"contains an {kind}: fine if it belongs to the company, remove it if it is the candidate's")
         if BAD_SCHEME_RE.search(s):
             rep.err(path, "contains a non-http(s) URL scheme (javascript:, data:, file:, ...)")
         for m in MD_LINK_RE.finditer(s):

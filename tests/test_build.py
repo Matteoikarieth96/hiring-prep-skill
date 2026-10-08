@@ -208,9 +208,10 @@ class BuildPage(unittest.TestCase):
         self.assertIn('id="studyBtn"', self.html)
         self.assertIn('id="resetBtn"', self.html)
 
-    def test_storage_key_is_namespaced(self):
+    def test_storage_key_is_namespaced_without_slug(self):
         key = quiz_json(self.html)["storage_key"]
-        self.assertRegex(key, r"^hiring-prep:quillmesh-devrel-lead:[0-9a-f]{10}$")
+        self.assertRegex(key, r"^hiring-prep:q:[0-9a-f]{16}$")
+        self.assertNotIn("quillmesh", key)
 
     def test_no_forbidden_dashes_in_output(self):
         self.assertIsNone(re.search("[\u2012\u2013\u2014\u2015]", self.html))
