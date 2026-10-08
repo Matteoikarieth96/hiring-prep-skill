@@ -1,0 +1,22 @@
+# Environment and tooling
+.env
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Personal data: never commit resumes or CVs
+**/resume*
+**/Resume*
+**/RESUME*
+**/cv.*
+**/CV.*
+**/curriculum*
+!scripts/resume_text.py
+!examples/fictional/resume.md
+
+# Working folders and generated pages
+work/
+evidence/
+out/
+!examples/fictional/out/
