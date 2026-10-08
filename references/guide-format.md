@@ -121,5 +121,5 @@ At build time the options of every question are reordered with a deterministic s
 
 ## Page features driven by the data
 
-- Quiz progress is saved in `localStorage` under `hiring-prep:<slug>:<hash of the questions>`, so a refreshed guide with new questions starts clean. The page works without storage.
+- Quiz progress is saved in browser storage (`localStorage`) under `hiring-prep:q:<hash of the questions>`: no slug or company name, and a refreshed guide with new questions starts clean. The page works without storage.
 - `#demo` in the URL shows only the quiz with the first question answered right and the second wrong, without saving anything (for screenshots). `#focus-<section>` shows one section (`tldr`, `overview`, `qa`, `playbook`, `exam`, `sources`).

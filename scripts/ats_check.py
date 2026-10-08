@@ -24,6 +24,7 @@ import shutil
 import ssl
 import subprocess
 import sys
+import unicodedata
 import urllib.error
 import urllib.request
 from typing import Callable, Dict, List, Optional, Tuple
@@ -43,10 +44,23 @@ ENDPOINTS = {
 Fetcher = Callable[[str], Tuple[int, Optional[bytes]]]
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Never follow redirects: a 3xx is reported as an error, not chased to another host or scheme."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: D401
+        return None
+
+
+# Replaces the default redirect handler; TLS verification stays on (default context).
+OPENER = urllib.request.build_opener(_NoRedirect())
+
+
 def http_get(url: str) -> Tuple[int, Optional[bytes]]:
+    if not url.startswith("https://"):
+        return 0, None
     req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": "hiring-prep-ats-check"})
     try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:  # noqa: S310 (fixed https hosts)
+        with OPENER.open(req, timeout=TIMEOUT) as resp:  # noqa: S310 (fixed https hosts)
             body = resp.read(MAX_BYTES + 1)
             if len(body) > MAX_BYTES:
                 return resp.status, None
@@ -66,7 +80,9 @@ def http_get(url: str) -> Tuple[int, Optional[bytes]]:
 def curl_get(url: str) -> Tuple[int, Optional[bytes]]:
     if not shutil.which("curl"):
         return TLS_FAILED, None
-    cmd = ["curl", "-sS", "--proto", "=https", "-m", str(TIMEOUT), "--max-filesize", str(MAX_BYTES),
+    # -q must come first: it stops curl from reading ~/.curlrc (which could say "insecure").
+    cmd = ["curl", "-q", "-sS", "--proto", "=https", "--proto-redir", "=https", "--max-redirs", "0",
+           "-m", str(TIMEOUT), "--max-filesize", str(MAX_BYTES),
            "-H", "Accept: application/json", "-A", "hiring-prep-ats-check", "-w", "\n%{http_code}", url]
     try:
         r = subprocess.run(cmd, capture_output=True, timeout=TIMEOUT + 5)
@@ -83,7 +99,10 @@ def curl_get(url: str) -> Tuple[int, Optional[bytes]]:
 
 
 def clean(s: object) -> str:
-    return CTRL_RE.sub(" ", str(s or "")).strip()[:300]
+    """Drop control and format characters (including bidi overrides such as U+202E)."""
+    text = CTRL_RE.sub(" ", str(s or ""))
+    text = "".join(" " if unicodedata.category(ch) in ("Cc", "Cf", "Zl", "Zp") else ch for ch in text)
+    return text.strip()[:300]
 
 
 def parse(board: str, data: object) -> List[Dict[str, str]]:

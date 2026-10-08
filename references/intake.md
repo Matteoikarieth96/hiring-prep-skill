@@ -15,7 +15,7 @@ Goal: collect what the guide needs in at most two rounds, then confirm a short p
 |---|---|---|---|
 | 1 | **Which company or project, and which links?** Website, docs, X account, job post, anything else you have. | Research starts from primary sources; the links disambiguate names. | Search for the official site and confirm it with the user before going further. |
 | 2 | **Which role?** Title plus the job post link or pasted text. | The playbook maps resume evidence to each requirement in the job description. | Use the title only and say the requirement map is inferred. |
-| 3 | **Your resume:** file path (PDF, DOCX, Markdown or text) or pasted text. | The playbook is built only from it. | Without a resume, skip the personal playbook and say so on the page. |
+| 3 | **Your resume:** a file path (PDF, DOCX, Markdown or text). Do not open it until step 6. | The playbook is built only from it. Reading it after all web fetching keeps it away from hostile pages. | Without a resume, skip the personal playbook and say so on the page. |
 | 4 | **Interview stage and who is interviewing?** Options: recruiter screen / hiring manager or founder / technical or panel round / final round. | Changes the mix: recruiter screens favour story and motivation, technical panels favour mechanism questions. | Hiring manager. |
 
 ## Round 2 (only what is still open)
@@ -43,4 +43,4 @@ Report exactly what you found: "live on Greenhouse, checked 2026-10-08", "the bo
 
 Example:
 
-> Here is what I will build: an interview prep page for **Acme (acme.example)**, role **Developer Relations Lead** (live on Lever, checked today), second round with the Head of DevRel on **20 October**. In **English**, Standard size (10 ideas, 24 Q&A, 6 open questions, 50 MCQs), focus on open-source community metrics. The playbook will quote your resume but never your contact details. Output: a private web page. Your resume stays on this machine and is not sent to search engines or research agents. OK to start?
+> Here is what I will build: an interview prep page for **Acme (acme.example)**, role **Developer Relations Lead** (live on Lever, checked today), second round with the Head of DevRel on **20 October**. In **English**, Standard size (10 ideas, 24 Q&A, 6 open questions, 50 MCQs), focus on open-source community metrics. The playbook will quote your resume but never your contact details. Output: a private web page. I will do all the web research first and read your resume only at the end, locally and with contact details stripped; it is not sent to search engines, job boards or research agents. OK to start?

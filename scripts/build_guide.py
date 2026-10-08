@@ -33,8 +33,10 @@ from guide_lib import (  # noqa: E402
     is_safe_url,
     json_for_script,
     load_guide,
+    make_private_dir,
     render_inline,
     safe_output_path,
+    write_private,
 )
 from validate import validate  # noqa: E402
 
@@ -359,11 +361,13 @@ class Page:
             }
             for q in mcqs
         ]
-        digest = hashlib.sha256(json.dumps(items, sort_keys=True).encode("utf-8")).hexdigest()[:10]
+        # The key holds only a hash of the questions: no slug or company name, because
+        # other local pages opened from file:// can list this browser storage.
+        digest = hashlib.sha256(json.dumps(items, sort_keys=True).encode("utf-8")).hexdigest()[:16]
         verdicts = ex.get("verdicts") or DEFAULT_VERDICTS
         label_keys = ("key_point", "correct", "wrong", "answer", "right_of", "answered", "questions")
         return {
-            "storage_key": f"hiring-prep:{self.meta.get('slug')}:{digest}",
+            "storage_key": f"hiring-prep:q:{digest}",
             "sections": sections,
             "mcq": items,
             "verdicts": [{"min": v["min"], "title": v["title"], "text": v["text"]} for v in verdicts],
@@ -442,10 +446,8 @@ def build(
         raise ValueError("validation failed:\n  " + "\n  ".join(rep.errors))
     target = safe_output_path(out_dir, output, guide["meta"]["slug"])
     html_text = render_page(guide, csp=csp, webfonts=webfonts)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    if target.is_symlink():
-        raise ValueError(f"refusing to overwrite symlink {target}")
-    target.write_text(html_text, encoding="utf-8")
+    make_private_dir(target.parent)
+    write_private(target, html_text)  # mode 0600, never follows a symlink at the target
     return target
 
 

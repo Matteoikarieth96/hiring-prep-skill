@@ -6,12 +6,14 @@ that text into markup without escaping it first.
 """
 from __future__ import annotations
 
+import errno
 import hashlib
 import html
 import json
+import os
 import re
 from pathlib import Path
-from typing import Any, Iterator, List, Optional, Tuple
+from typing import Any, Iterator, List, Optional, Tuple, Union
 from urllib.parse import urlsplit
 
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
@@ -27,14 +29,6 @@ ALLOWED_SCHEMES = ("http", "https")
 FORBIDDEN_DASHES = "\u2012\u2013\u2014\u2015\u2e3a\u2e3b"
 DASH_RE = re.compile("[" + FORBIDDEN_DASHES + "]")
 
-EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}")
-# International numbers with a leading +, and the common 3-3-4 layout.
-# Deliberately narrow so that years, ranges and money amounts do not match.
-PHONE_RES = (
-    re.compile(r"(?<![\w+])\+\d{1,3}[\s.-]?\(?\d{1,4}\)?(?:[\s.-]?\d{2,4}){2,4}(?!\w)"),
-    re.compile(r"(?<![\w-])\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}(?![\w-])"),
-)
-DOB_RE = re.compile(r"(?i)\b(date of birth|born on|data di nascita|nato il|nata il)\b")
 BAD_SCHEME_RE = re.compile(r"(?i)\b(javascript|vbscript|data|file|blob)\s*:(?=\S)")
 # Link targets may contain one level of balanced parentheses, e.g. alert(1) or Wiki_(topic).
 URL_IN_PARENS = r"(?:[^()\s]|\([^()\s]*\))+"
@@ -127,6 +121,18 @@ def tokenize_inline(text: str) -> List[list]:
         pos = m.end()
     push_text(text[pos:])
     return tokens
+
+
+def plain_text(text: Any) -> str:
+    """What a reader sees once the inline markup is rendered, plus link targets.
+
+    Used for privacy checks, so that markup cannot split an email address
+    (for example mario.rossi**@**mail.example) and hide it from a scan.
+    """
+    toks = tokenize_inline("" if text is None else str(text))
+    seen = "".join(t[1] for t in toks)
+    hrefs = " ".join(t[2] for t in toks if t[0] == "a")
+    return seen + (" " + hrefs if hrefs else "")
 
 
 def compact_tokens(text: str) -> Any:
@@ -341,16 +347,6 @@ def letter_counts(mcqs: list) -> List[int]:
     return counts
 
 
-def contact_hits(text: str) -> List[str]:
-    """Return a list of contact-detail kinds found in text."""
-    hits = []
-    if EMAIL_RE.search(text):
-        hits.append("email address")
-    if any(r.search(text) for r in PHONE_RES):
-        hits.append("phone number")
-    return hits
-
-
 def safe_output_path(out_dir: Path, output: Optional[Path], slug: str) -> Path:
     """Resolve the output file and refuse anything outside out_dir."""
     if not isinstance(slug, str) or not SLUG_RE.match(slug):
@@ -370,3 +366,33 @@ def safe_output_path(out_dir: Path, output: Optional[Path], slug: str) -> Path:
     except ValueError:
         raise ValueError(f"output {target} is outside the output folder {base}") from None
     return target
+
+
+def make_private_dir(path: Path) -> Path:
+    """Create a folder (and parents) readable only by the current user."""
+    p = Path(path)
+    p.mkdir(mode=0o700, parents=True, exist_ok=True)
+    return p
+
+
+def write_private(path: Path, data: Union[str, bytes], mode: int = 0o600) -> None:
+    """Write a file without following a symlink at the target, mode 0600.
+
+    O_NOFOLLOW makes the open fail if the final path component is a symlink,
+    so a planted link cannot redirect the write. Existing files are reset to
+    the private mode as well.
+    """
+    p = Path(path)
+    if p.is_symlink():
+        raise ValueError(f"refusing to write through the symlink {p}")
+    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_BINARY", 0)
+    try:
+        fd = os.open(str(p), flags, mode)
+    except OSError as exc:
+        if exc.errno == errno.ELOOP:
+            raise ValueError(f"refusing to write through the symlink {p}") from None
+        raise
+    with os.fdopen(fd, "wb") as fh:
+        if hasattr(os, "fchmod"):
+            os.fchmod(fh.fileno(), mode)
+        fh.write(data.encode("utf-8") if isinstance(data, str) else data)
