@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "slug": "company-role",
+    "title": "TODO Company, Role: interview prep",
+    "eyebrow": "Interview prep · TODO Company · TODO Role",
+    "dek": "TODO one sentence on what this page covers.",
+    "company": "TODO Company",
+    "role": "TODO Role",
+    "stage": "TODO stage and interviewers",
+    "interview_date": "2026-01-31",
+    "job_post_status": "TODO live on <board>, checked <date> / not verified",
+    "as_of": "2026-01-01",
+    "lang": "en",
+    "target_counts": { "tldr": 10, "qa": 24, "open": 6, "mcq": 50 }
+  },
+
+  "tldr": [
+    "TODO idea 1: what the company does, in one sentence.",
+    "TODO idea 2: how it works."
+  ],
+
+  "overview": {
+    "what_it_is": ["TODO"],
+    "how_it_works": ["TODO step by step, link the docs: [docs](https://example.com/docs)"],
+    "business_model": ["TODO"],
+    "numbers": [
+      { "label": "TODO metric", "value": "TODO", "status": "verified", "source": "S1", "date": "2026-01-01", "note": "optional" }
+    ],
+    "team": ["TODO public roles only"],
+    "funding": ["TODO rounds, amounts, lead investors, dates; or 'No public funding found as of <date>'"],
+    "competitors": {
+      "intro": ["TODO who customers compare it with"],
+      "columns": ["", "TODO Company", "Competitor 1", "Competitor 2"],
+      "rows": [
+        ["Model", "TODO", "TODO", "TODO"],
+        ["Strong at", "TODO", "TODO", "TODO"],
+        ["Weak at", "TODO", "TODO", "TODO"]
+      ],
+      "note": ["TODO when the competitor data was checked"]
+    },
+    "news": [
+      { "date": "2026-01-01", "text": "TODO", "source": "S1" }
+    ],
+    "risks": ["TODO"],
+    "traps": [
+      { "myth": "TODO what a careless candidate says", "fact": "TODO the accurate version", "source": "S1" }
+    ],
+    "tips": ["TODO optional interview tip"]
+  },
+
+  "qa": [
+    { "group": "Ecosystem and product", "items": [ { "q": "TODO", "a": ["TODO"] } ] },
+    { "group": "The role's craft", "items": [ { "q": "TODO", "a": ["TODO"] } ] },
+    { "group": "The company", "items": [ { "q": "TODO", "a": ["TODO"] } ] }
+  ],
+
+  "playbook": {
+    "positioning": ["**TODO claim.** TODO resume evidence and why it matters here."],
+    "evidence_map": [
+      { "requirement": "TODO from the job post", "evidence": "TODO from the resume, or 'No direct evidence in the resume.'", "fit": "partial" }
+    ],
+    "objections": [ { "objection": "TODO", "reframe": "TODO" } ],
+    "star_stories": [
+      { "title": "TODO", "situation": "TODO", "task": "TODO", "action": "TODO", "result": "TODO", "use_for": "TODO" }
+    ],
+    "questions_to_ask": ["TODO"],
+    "do": ["TODO"],
+    "dont": ["TODO"],
+    "cheat_sheet": [ { "term": "TODO", "value": "TODO" } ],
+    "plan_30_60_90": [
+      { "phase": "Days 1 to 30", "goal": "Learn and measure.", "items": ["TODO"] },
+      { "phase": "Days 31 to 60", "goal": "First wins.", "items": ["TODO"] },
+      { "phase": "Days 61 to 90", "goal": "Scale what works.", "items": ["TODO"] }
+    ]
+  },
+
+  "exam": {
+    "open": [ { "q": "TODO", "a": ["TODO model answer", "TODO why it works"] } ],
+    "sections": [
+      { "id": "product", "title": "Product and mechanism", "dek": "TODO" },
+      { "id": "business", "title": "Business and numbers", "dek": "TODO" },
+      { "id": "market", "title": "Market and competitors", "dek": "TODO" },
+      { "id": "craft", "title": "The role's craft", "dek": "TODO" },
+      { "id": "you", "title": "Your story in the room", "dek": "TODO" }
+    ],
+    "mcq": [
+      {
+        "s": "product",
+        "d": 1,
+        "q": "TODO question",
+        "o": ["TODO correct", "TODO distractor from a real confusion", "TODO second distractor", "TODO third distractor"],
+        "a": 0,
+        "e": ["TODO why it is right.", "TODO concrete example, and why the tempting distractor is wrong (quote its text, never refer to it by position)."],
+        "k": "TODO the line to remember, tied to the resume when relevant."
+      }
+    ],
+    "verdicts": [
+      { "min": 0.85, "title": "Ready", "text": "Review only the questions you missed, then rehearse your STAR stories out loud." },
+      { "min": 0.6, "title": "Solid base", "text": "Reread the traps and the numbers, then retake the test tomorrow." },
+      { "min": 0, "title": "Not yet", "text": "Go through the guide in study mode, then press Start over and retake the test." }
+    ]
+  },
+
+  "sources": [
+    { "id": "S1", "title": "TODO", "url": "https://example.com/TODO", "accessed": "2026-01-01", "kind": "primary", "publisher": "TODO" }
+  ]
+}

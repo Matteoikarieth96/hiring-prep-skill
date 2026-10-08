@@ -1,0 +1,384 @@
+{
+  "meta": {
+    "slug": "quillmesh-devrel-lead",
+    "title": "Quillmesh, Developer Relations Lead: the full prep",
+    "eyebrow": "Interview prep · Quillmesh (fictional) · Developer Relations Lead, EMEA",
+    "dek": "Everything you need for the second round: what Quillmesh does and how it makes money, the numbers you can safely quote, 12 quick questions, a playbook built only from your resume, and a 16-question test.",
+    "company": "Quillmesh (fictional)",
+    "role": "Developer Relations Lead, EMEA",
+    "stage": "Second round, Head of Developer Experience and a staff engineer",
+    "interview_date": "2026-10-20",
+    "job_post_status": "live on the company job board, checked 2026-10-08",
+    "as_of": "2026-10-08",
+    "lang": "en",
+    "fictional": true,
+    "shuffle_seed": 20261008,
+    "target_counts": { "tldr": 10, "qa": 12, "open": 4, "mcq": 16 }
+  },
+
+  "tldr": [
+    "Quillmesh sells safety for event-driven systems: the free `qmc` CLI catches breaking changes between producers and consumers before deploy, and the paid Cloud makes that work across dozens of teams.",
+    "The mechanism in one line: each service declares what it produces and what it consumes, CI compares every change against what consumers actually rely on, and `can-i-deploy` gates the release.",
+    "The moat is the consumer view. A schema registry checks a producer against its own history; contract testing checks it against the real readers.",
+    "Open core: the CLI is free (Apache-2.0), Cloud costs $29 per connected service per month since July 2026, Enterprise is custom. Developer adoption is the top of the revenue funnel, so developer relations is a revenue role here.",
+    "Numbers worth quoting, with their labels: 9,400 GitHub stars and 182,000 September downloads (verified), over 300 paying customers (claimed), $22M raised in total.",
+    "Fresh news: v3.0 replay mode (September 2026), per-service pricing (July 2026), and a June postmortem for a false negative that they handled in the open.",
+    "The live risk is open-core trust: an August community thread pushed back on moving the compatibility matrix to Cloud. Expect a question on it.",
+    "Traps: not Kafka-only since 2025, not called Quillcheck since 2024, not priced per seat since July 2026, and not $25M raised.",
+    "Your angle: you lived their customer's pain (the 2022 schema incident at Brindlebay) and solved it the way their product does, then you made developers fast at Zelvora (3 days to 40 minutes).",
+    "The gaps to own honestly: no direct reports yet and no open-core experience. Bring the meetup team of 4 and the friction report loop as your leadership evidence."
+  ],
+
+  "overview": {
+    "what_it_is": [
+      "Quillmesh is a Lisbon-based developer-tools company founded in 2022. It makes `qmc`, an open-source contract-testing CLI for event-driven systems (Kafka, NATS and AMQP), and Quillmesh Cloud, a paid hosted service built on top of it. The pitch in one line: catch breaking changes between services that talk through events before they reach production, not after.",
+      "Its buyers are platform engineering teams at companies running dozens of services. Its users are the backend engineers who write the producers and consumers."
+    ],
+    "how_it_works": [
+      "Each service declares what it produces and what it consumes in a contract file, `quill.yaml`, with message schemas in JSON Schema or Avro. A producer contract says: I publish `order.created` with these fields. A consumer contract says: I read `order.created` and I rely on `id`, `total` and `currency`.",
+      "In CI, `qmc verify` checks a change against the contracts on the other side. Removing a field a consumer relies on, changing a type, or narrowing an enum is flagged as breaking. `qmc can-i-deploy` then answers the release question: is this version compatible with what runs in each environment? Version 3.0 adds replay mode, which records a sample of real production events and replays them against a new consumer before it ships ([docs](https://docs.quillmesh.example/concepts/how-it-works)).",
+      "The idea to say out loud: a schema registry checks that a *producer's* change is compatible with older versions of itself. Contract testing checks it against what each *consumer* actually uses. That consumer view is the moat."
+    ],
+    "business_model": [
+      "Open core. The `qmc` CLI is free and Apache-2.0 licensed. Revenue comes from Quillmesh Cloud: a hosted contract registry, a compatibility matrix across all services, deploy history and alerts. The Team plan costs $29 per connected service per month and is free up to 5 services; Enterprise adds single sign-on, audit logs and an on-premises registry at custom prices.",
+      "The funnel is bottom-up: an engineer adds `qmc` to one pipeline, the team hits the coordination problem around 5 services, and Cloud becomes the shared source of truth. That is why developer relations sits close to revenue here: CLI activation is the top of the funnel."
+    ],
+    "numbers": [
+      { "label": "GitHub stars on `qmc`", "value": "9,400", "status": "verified", "source": "S3", "date": "2026-10-07" },
+      { "label": "Contributors to `qmc`", "value": "160", "status": "verified", "source": "S3", "date": "2026-10-07" },
+      { "label": "CLI downloads, September 2026", "value": "182,000", "status": "verified", "source": "S4", "date": "2026-10-01", "note": "The blog says over 200,000 a month, but that figure counts mirror traffic." },
+      { "label": "Paying Cloud customers", "value": "over 300", "status": "claimed", "source": "S5", "date": "2026-03-12" },
+      { "label": "Cloud Team price", "value": "$29 per connected service per month, free up to 5 services", "status": "verified", "source": "S2", "date": "2026-10-07" },
+      { "label": "Total funding", "value": "$22M ($4M seed 2023, $18M Series A 2026)", "status": "verified", "source": ["S5", "S6"], "date": "2026-03-12" },
+      { "label": "Headcount", "value": "41", "status": "claimed", "source": "S10", "date": "2026-10-08" },
+      { "label": "Annual recurring revenue", "value": "low single-digit millions of dollars", "status": "estimate", "source": "S11", "date": "2026-05-20", "note": "The CEO's own range in a press interview; no exact figure is public." }
+    ],
+    "team": [
+      "41 people according to the job post, roughly 60 percent in engineering. Two co-founders: the CEO, a former platform engineer, and the CTO, who wrote the first version of `qmc` as a side project. Developer relations is 2 people today, reporting to the Head of Developer Experience; this is the first developer relations lead hire and it covers EMEA."
+    ],
+    "funding": [
+      "A $4M seed in 2023 and an $18M Series A in March 2026 led by Fieldstone Ventures (fictional), $22M in total. The Series A announcement names three uses of the money: Cloud enterprise features, a push on the NATS ecosystem, and \"community at scale\", which is this role."
+    ],
+    "competitors": {
+      "intro": [
+        "Three alternatives come up in every sales call. Know what each does well; never trash them in the interview."
+      ],
+      "columns": ["", "Quillmesh (`qmc` + Cloud)", "Harborlint (fictional)", "Broker-bundled schema registry", "In-house scripts"],
+      "rows": [
+        ["Model", "Open-source CLI plus paid hosted registry", "Closed SaaS linter", "Registry shipped with a broker platform", "Custom CI checks"],
+        ["Checks what consumers use", "Yes, consumer contracts are first-class", "No, producer schemas only", "No, compatibility rules on the producer schema", "Rarely"],
+        ["Release gate", "`can-i-deploy` in CI", "Pull request comments", "Rejects incompatible schema registration", "Whatever the team builds"],
+        ["Brokers", "Kafka, NATS, AMQP", "Kafka only", "Its own platform", "Any"],
+        ["Pricing", "Free CLI; Cloud $29 per service per month", "Per seat", "Bundled with the platform", "Engineering time"],
+        ["Strong at", "Catching breaking changes across teams before deploy", "Polished UI, fast onboarding", "No extra tool if you already run that platform", "Fits unusual setups"],
+        ["Weak at", "Open-core tension, small sales team", "No consumer view, one broker", "Vendor lock-in, no consumer view", "Breaks silently, nobody owns it"]
+      ],
+      "note": [
+        "In this fictional example the competitors are invented too. In a real guide, every competitor cell comes from that competitor's own docs or pricing page, with the date you checked it."
+      ]
+    },
+    "news": [
+      { "date": "2026-09-15", "text": "`qmc` v3.0 ships replay mode: record production events and replay them against a new consumer version in CI.", "source": "S7" },
+      { "date": "2026-08-18", "text": "A community thread objects to moving the compatibility matrix view to Cloud. The CTO commits to keeping every check in the CLI open and moving only the hosted view.", "source": "S9" },
+      { "date": "2026-07-01", "text": "Cloud pricing moves from per seat to per connected service.", "source": "S12" },
+      { "date": "2026-06-20", "text": "Postmortem for v2.7.0, which did not flag enum narrowing as breaking for two days; fixed in v2.7.1.", "source": "S8" },
+      { "date": "2026-03-12", "text": "$18M Series A led by Fieldstone Ventures (fictional).", "source": "S5" }
+    ],
+    "risks": [
+      "Open-core trust: every feature that moves to Cloud risks the community. The August thread is the live example.",
+      "Platform bundling: broker vendors can ship a good-enough registry for free.",
+      "Trust is the product: a contract tool that misses a breaking change hurts more than most bugs. The June false negative is the reference case.",
+      "Concentration: most usage is on Kafka; NATS and AMQP adoption is early and its share is not public.",
+      "Small team, wide surface: 41 people support three brokers, two schema formats and a hosted service."
+    ],
+    "traps": [
+      { "myth": "`qmc` only works with Kafka.", "fact": "NATS and AMQP have been supported since v2.0 (May 2025). Kafka-only describes the 2023 product.", "source": "S1" },
+      { "myth": "The product is called Quillcheck.", "fact": "Quillcheck was renamed Quillmesh in 2024 and the CLI is `qmc`. Older conference videos still use the old name.", "source": "S1" },
+      { "myth": "Cloud is priced per seat.", "fact": "Per connected service since 1 July 2026: $29 per service per month on Team. Seat prices come from old blog posts.", "source": "S12" },
+      { "myth": "Quillmesh raised $25M.", "fact": "$22M in total: a $4M seed in 2023 and an $18M Series A in March 2026. The $25M figure on one aggregator adds a grant nobody confirmed.", "source": "S5" },
+      { "myth": "Over 200,000 downloads a month, quoted as a fact.", "fact": "The package registry shows 182,000 for September 2026. The larger figure is a blog claim that counts mirrors.", "source": "S4" }
+    ],
+    "tips": [
+      "Install `qmc` and run `qmc verify` on a toy producer and consumer before the interview. One sentence that starts with \"when I broke my own contract\" is worth more than any amount of reading."
+    ]
+  },
+
+  "qa": [
+    {
+      "group": "Ecosystem and product",
+      "items": [
+        { "q": "What problem does contract testing solve in event-driven systems?", "a": ["In request and response APIs a breaking change fails loudly at call time. With events the producer does not know who listens, so a removed field breaks a consumer silently, sometimes hours later. Contract testing makes the hidden dependency explicit and checks it in CI, before deploy."] },
+        { "q": "Schema registry versus contract testing, in two sentences?", "a": ["A registry enforces compatibility rules on a producer's schema against its own earlier versions. Contract testing checks a change against what each consumer actually reads, so it allows a change nobody depends on and blocks one that looks harmless but breaks a real reader."] },
+        { "q": "What does `can-i-deploy` answer?", "a": ["Whether this exact version of a service is compatible with the versions running in a given environment, using the verification results stored in the registry. It turns contract testing from a report into a release gate."] },
+        { "q": "What is replay mode and why does it matter?", "a": ["Shipped in v3.0 in September 2026, it records a sample of real production events and replays them against a new consumer version in CI. Contracts catch what teams declared; replay catches what they forgot to declare, like a field that is optional in the schema but always present in practice."] }
+      ]
+    },
+    {
+      "group": "The role's craft: developer relations",
+      "items": [
+        { "q": "How do you measure developer relations in an open-core company?", "a": ["Tie activity to the funnel: CLI installs and first successful `qmc verify` (activation), teams with 5 or more services verified (the Cloud trigger), community-sourced Cloud signups, and contributor retention. Report a small set every month and say which ones you influence directly. Talk attendance goes in an appendix."] },
+        { "q": "What makes a good quickstart for a CLI like `qmc`?", "a": ["Time to first value under 10 minutes, a working example the user did not have to write, and an error message on the first breaking change that teaches the concept. Your Zelvora quickstart rewrite is the proof you know how: 3 days to 40 minutes."] },
+        { "q": "How do you turn community feedback into product input without becoming a ticket router?", "a": ["Aggregate and rank: a monthly friction report with counts, quotes and a proposed fix, reviewed live with product. You did exactly this at Zelvora, and 7 of the items shipped in 2025."] },
+        { "q": "How do you choose which conferences to attend?", "a": ["Go where buyers and builders overlap: platform engineering and streaming events rather than general developer festivals. Judge each event by the activations that follow, using a workshop repo or a tracked link, not by badge scans."] }
+      ]
+    },
+    {
+      "group": "The company",
+      "items": [
+        { "q": "Why per-service pricing instead of per seat?", "a": ["Value grows with the number of services under contract, not with the number of people who log in. Per-service pricing also removes the incentive to share one login, and it maps to the moment Cloud becomes necessary, around 5 services."] },
+        { "q": "What happened with the v2.7.0 release?", "a": ["For two days in June 2026, enum narrowing was not flagged as breaking. They shipped v2.7.1, published a postmortem with a timeline and added the case to their test corpus. For a trust product, the open postmortem was the right response, and it is a good talking point."] },
+        { "q": "What was the August community controversy about?", "a": ["A proposal to show the cross-service compatibility matrix only in Cloud. Contributors read it as moving value out of the open-source tool. The CTO committed to keeping every check in the CLI open and moving only the hosted view. It is the open-core boundary question in one thread."] },
+        { "q": "Who is the buyer and who is the user?", "a": ["The buyer is the platform engineering lead who owns release safety across teams. The user is the backend engineer writing producers and consumers. Developer relations wins the user; the user's success builds the buyer's case."] }
+      ]
+    }
+  ],
+
+  "playbook": {
+    "positioning": [
+      "**Lead with the customer's pain, lived.** In 2022 a schema change at Brindlebay broke consumers and cost 6 hours of tracking events. You introduced schema review and a compatibility check in CI, and there were zero schema incidents in the next 12 months. That is Quillmesh's pitch, told by someone who needed it.",
+      "**Then show the developer relations result.** At Zelvora you cut median time to first webhook from 3 days to 40 minutes. Activation is the metric this role will be judged on.",
+      "**Community evidence that is yours.** 14 meetups and about 600 members at Event-Driven Porto, and a maintained testing library (`kafkette`, about 300 stars). Small but real, and in the right niche.",
+      "**Languages are an EMEA asset.** Portuguese, English and Spanish, with 4 talks given in Portuguese or Spanish. The company is in Lisbon and the role covers EMEA.",
+      "**Be exact about scale.** Your numbers are modest and true. Say them precisely and never round them up."
+    ],
+    "evidence_map": [
+      { "requirement": "4+ years in developer relations or technical community roles", "evidence": "Developer Advocate since 2023 (3 years) plus meetup co-organizer since 2021. Count the community years explicitly; do not claim 4 years with the title.", "fit": "partial" },
+      { "requirement": "Hands-on with event-driven architectures", "evidence": "3 years operating a Kafka pipeline of about 30 services at Brindlebay; owner of the events API developer experience at Zelvora.", "fit": "strong" },
+      { "requirement": "Grow an open-source community", "evidence": "Maintainer of `kafkette` (about 300 stars); sample-apps repository with 1,100 stars; meetup with about 600 members.", "fit": "partial" },
+      { "requirement": "Turn community signals into product input", "evidence": "Monthly top-10 friction report at Zelvora; 7 items shipped as product fixes in 2025.", "fit": "strong" },
+      { "requirement": "Measure developer relations impact", "evidence": "Time to first webhook measured with onboarding telemetry, 3 days to 40 minutes. One metric, not yet a full program.", "fit": "partial" },
+      { "requirement": "Lead and grow a small team", "evidence": "No direct reports. Led a volunteer organizing team of 4; mentored 2 junior engineers.", "fit": "gap" },
+      { "requirement": "Open-core business experience (nice to have)", "evidence": "No direct evidence in the resume.", "fit": "gap" },
+      { "requirement": "Portuguese or Spanish (nice to have)", "evidence": "Portuguese native, Spanish professional, 4 talks in those languages.", "fit": "strong" }
+    ],
+    "objections": [
+      { "objection": "This is a lead role and you have never managed anyone.", "reframe": "True, no direct reports. What you have led: a volunteer organizing team of 4 for five years, where nobody had to follow you, and a monthly cross-functional review with product. Ask how the role grows; if the plan is to hire two people in year one, say you want a hiring plan and a manager to learn from in the first quarter." },
+      { "objection": "Payments is not developer tools.", "reframe": "Your users were developers integrating an events API, and their hardest problems were the ones Quillmesh solves: unclear event contracts and breaking changes. Before that you ran a Kafka pipeline and built the CI compatibility check that `qmc` replaces." },
+      { "objection": "Have you worked in open source with a commercial edge?", "reframe": "Not in an open-core company, and say so. You maintain a small library and you have read the August thread closely. Your view: keep every check open, sell the coordination layer. Ask how they draw that line internally." }
+    ],
+    "star_stories": [
+      {
+        "title": "The schema incident that became a CI gate (Brindlebay, 2022)",
+        "situation": "A producer team removed a field from a shipment event; three consumers failed silently and 6 hours of tracking events were lost.",
+        "task": "As the engineer on call, restore the data and prevent a repeat.",
+        "action": "Replayed the lost events, then proposed and built schema review in CI plus a compatibility check before deploy, and wrote the runbook other teams adopted.",
+        "result": "Zero schema-related incidents in the following 12 months.",
+        "use_for": "Why Quillmesh? Tell me about a failure. Do you understand our customers?"
+      },
+      {
+        "title": "From 3 days to 40 minutes (Zelvora, 2024 to 2025)",
+        "situation": "New merchants took a median of 3 days to receive their first successful webhook, and support tickets clustered on setup.",
+        "task": "Own the developer experience for the events API.",
+        "action": "Rewrote the quickstart around one working example, added a local event replayer, and instrumented each onboarding step with telemetry.",
+        "result": "Median time to first webhook fell to 40 minutes (Q4 2024 compared with Q2 2025).",
+        "use_for": "How do you measure impact? What would you change in our quickstart?"
+      },
+      {
+        "title": "The friction report product actually read (Zelvora, 2025)",
+        "situation": "Developer feedback was scattered across support, forums and talks, and product ignored one-off anecdotes.",
+        "task": "Make community feedback useful to product.",
+        "action": "Started a monthly top-10 friction report with counts, quotes and a proposed fix, reviewed live with product.",
+        "result": "7 items shipped as product fixes in 2025.",
+        "use_for": "How do you work with product and engineering? How do you handle community pressure?"
+      }
+    ],
+    "questions_to_ask": [
+      "Which numbers will this role own in the first year: CLI activation, Cloud conversions from the community, or both?",
+      "After the August thread, how did the team decide where the open-core line sits, and who owns that call?",
+      "What usually triggers a team to move from the free CLI to Cloud: a number of services, an incident, a buyer?",
+      "Is NATS adoption a priority for EMEA, given the Series A plan?",
+      "How will the developer relations team grow in the next 12 months, and how would you support a first-time manager?",
+      "What would make you say, six months from now, that this hire was a great decision?"
+    ],
+    "do": [
+      "Run `qmc verify` on a toy producer and consumer before the call, and mention one real detail from the experience.",
+      "Label every number: verified (182,000 September downloads from the registry) versus claimed (over 300 customers).",
+      "Open answers with the conclusion, then the evidence, then the number.",
+      "Name your gaps before they do, with a plan attached."
+    ],
+    "dont": [
+      "Call the product Quillcheck, Kafka-only, or priced per seat. All three are stale.",
+      "Say $25M raised. It is $22M.",
+      "Take sides against the community on the August thread. Show you understand both the revenue logic and the trust cost.",
+      "Round your own numbers up. 600 members is good; 1,000 would be false."
+    ],
+    "cheat_sheet": [
+      { "term": "`qmc`", "value": "Open-source CLI, Apache-2.0 · 9,400 stars · 160 contributors · 182,000 downloads in September 2026 (registry)" },
+      { "term": "Cloud", "value": "$29 per connected service per month (Team) · free up to 5 services · Enterprise custom · per service since 1 July 2026" },
+      { "term": "Company", "value": "Founded 2022 in Lisbon · 41 people (job post) · over 300 paying customers (claimed)" },
+      { "term": "Funding", "value": "$4M seed 2023 · $18M Series A March 2026 · $22M total" },
+      { "term": "Dates", "value": "v2.0 multi-broker May 2025 · v2.7.0 false negative June 2026 · per-service pricing July 2026 · v3.0 replay mode 15 September 2026" },
+      { "term": "Your numbers", "value": "3 days to 40 minutes · 7 friction items shipped · 14 meetups, about 600 members · 9 talks · 0 schema incidents in 12 months" }
+    ],
+    "plan_30_60_90": [
+      { "phase": "Days 1 to 30", "goal": "Learn and measure.", "items": ["Run the full onboarding as a new user and log every friction point.", "Agree 3 to 5 metrics with the Head of Developer Experience: activation, teams with 5+ services, community-sourced Cloud signups.", "Meet the top 10 community contributors and the 5 largest Cloud customers in EMEA."] },
+      { "phase": "Days 31 to 60", "goal": "Fix the first mile.", "items": ["Ship a new quickstart and one replay-mode tutorial.", "Start the monthly friction report with product.", "Plan two EMEA events: one talk and one hands-on workshop."] },
+      { "phase": "Days 61 to 90", "goal": "Scale what works.", "items": ["Report the first metric movement and what caused it.", "Launch a contributor program for NATS and AMQP examples.", "Propose the developer relations hiring plan for the next two quarters."] }
+    ]
+  },
+
+  "exam": {
+    "open": [
+      { "q": "Pitch Quillmesh in 30 seconds to a platform engineering lead.", "a": ["Model answer: \"Your services talk through events, so a producer can break a consumer it does not know about, and you find out in production. Quillmesh makes those dependencies explicit: every service declares what it produces and consumes, and `qmc` checks each change against what real consumers rely on before deploy. The CLI is free; Cloud gives your platform team one view and a release gate across every service.\"", "Why it works: problem, mechanism, outcome and business model in four sentences, with no adjectives."] },
+      { "q": "How would you measure the success of developer relations here in the first six months?", "a": ["Model answer: one activation metric (median time from install to first successful `qmc verify`), one conversion metric (community-sourced Cloud signups, tracked by link and by survey), and one community health metric (returning contributors per month). Agree baselines in month one, report monthly, and say which ones you can move directly.", "Bring your Zelvora method as proof: instrument each onboarding step, find the stall, fix it, measure again."] },
+      { "q": "Walk me through a time a breaking change hurt you.", "a": ["Model answer: the Brindlebay story in STAR form. A field removal broke three consumers silently and cost 6 hours of tracking events; you replayed the data, built schema review and a compatibility check in CI, and there were no schema incidents in the following 12 months.", "Close the loop: \"That is the problem `qmc` solves properly, and why I want to help other teams avoid that night.\""] },
+      { "q": "A contributor publicly accuses the company of moving features behind a paywall. What do you do in the first 48 hours?", "a": ["Model answer: acknowledge quickly and in public, without promising an outcome. Collect the concrete use cases in one place, bring them to product with counts the same week, and commit to a date for an answer. Then explain the decision and the reasoning, including what stays open.", "Reference the August thread: the resolution (checks stay in the CLI, only the hosted view moves) is the kind of line developer relations helps draw and then explains."] }
+    ],
+    "sections": [
+      { "id": "product", "title": "Product and mechanism", "dek": "What `qmc` checks and how the release gate works." },
+      { "id": "business", "title": "Business and numbers", "dek": "Pricing, funding, and which numbers are verified." },
+      { "id": "craft", "title": "Developer relations craft", "dek": "Metrics, content and community, applied to this role." },
+      { "id": "you", "title": "Your story in the room", "dek": "Picking the right evidence from your resume." }
+    ],
+    "mcq": [
+      {
+        "s": "product", "d": 1,
+        "q": "What does a consumer contract in `quill.yaml` describe?",
+        "o": ["The events a service reads and the fields it relies on", "The broker topics a service is allowed to create", "The retry policy for messages that fail", "The expected throughput in events per second"],
+        "a": 0,
+        "e": ["A consumer contract lists the events a service reads and, crucially, the fields it actually uses. That is the information a producer never has on its own, and it is what lets `qmc` decide whether a change is safe.", "Example: the billing service reads `order.created` and relies on `id`, `total` and `currency`. If the orders team removes `coupon_code`, verification passes because no consumer declared it. If they rename `currency`, it fails and names the billing service."],
+        "k": "Say \"what consumers actually rely on\" in the interview: it is the phrase that separates contract testing from schema validation."
+      },
+      {
+        "s": "product", "d": 2,
+        "q": "A producer removes an optional field that no consumer declares. What does `qmc verify` report?",
+        "o": ["Compatible, because no consumer depends on the field", "Breaking, because removing any field is breaking", "A warning that blocks deploy until someone approves", "Nothing, because optional fields are never checked"],
+        "a": 0,
+        "e": ["The check is consumer-driven: a change is breaking only if it breaks something a consumer declared. Removing a field nobody reads is compatible, which lets teams clean up schemas without fear.", "Example: a registry with a strict backward rule might reject the same removal and force the team to keep dead fields forever. The answer \"optional fields are never checked\" is a trap: optional fields are checked like any other field as soon as a consumer declares them."],
+        "k": "This is the cleanest way to explain the moat compared with a schema registry."
+      },
+      {
+        "s": "product", "d": 2,
+        "q": "What question does `qmc can-i-deploy` answer?",
+        "o": ["Is this version compatible with what runs in the target environment?", "Has this version passed its unit tests?", "Does the team have permission to deploy today?", "Is the broker cluster healthy enough for a release?"],
+        "a": 0,
+        "e": ["It reads the verification results stored in the registry and checks this version against the versions currently deployed in an environment such as staging or production. The output is a yes or no the pipeline can act on.", "Example: orders v42 passed against billing v17, but production still runs billing v16. `can-i-deploy --to production` says no and names billing v16, so the team ships billing first."],
+        "k": "A gate, not a report: that is why platform teams pay for it."
+      },
+      {
+        "s": "product", "d": 3,
+        "q": "What does replay mode (v3.0) catch that contracts alone miss?",
+        "o": ["Dependencies nobody declared, visible only in real events", "Broker overload under peak traffic", "Consumers that need an automatic rollback", "Event payloads sent without encryption"],
+        "a": 0,
+        "e": ["Contracts only know what teams wrote down. Replay records a sample of real production events and runs them through the new consumer version in CI, so it catches the field everyone assumed but nobody declared.", "Example: a field is optional in the schema but present in every real event, and a consumer quietly depends on it. A producer change that starts omitting it passes contracts but fails replay."],
+        "k": "Shipped on 15 September 2026: the freshest product fact you can bring."
+      },
+      {
+        "s": "business", "d": 1,
+        "q": "How is the Quillmesh Cloud Team plan priced today?",
+        "o": ["$29 per connected service per month", "$29 per seat per month", "$290 a month flat for up to 20 services", "Free, with paid support only"],
+        "a": 0,
+        "e": ["Since 1 July 2026 the Team plan is priced per connected service. Value grows with the number of services under contract, not with the number of people who log in.", "Example: a team with 12 services pays 12 times $29, about $348 a month, whether 3 or 30 engineers use the dashboard. Old blog posts still show seat pricing, which is why \"per seat\" is the classic trap."],
+        "k": "If you quote pricing, say \"per service since July\": it shows you read current sources."
+      },
+      {
+        "s": "business", "d": 1,
+        "q": "How much has Quillmesh raised in total?",
+        "o": ["$22M: a $4M seed and an $18M Series A", "$25M across three rounds", "$18M in a single Series A", "$4M seed, with a Series A only rumored"],
+        "a": 0,
+        "e": ["The company blog and the lead investor's note agree: a $4M seed in 2023 and an $18M Series A in March 2026, $22M in total.", "Example of the trap: one aggregator lists $25M because it adds a grant nobody confirmed. Quoting $25M in the room signals you read a secondary source and did not check it."],
+        "k": "Totals are where candidates slip. Say the two rounds, then the sum."
+      },
+      {
+        "s": "business", "d": 2,
+        "q": "Which download figure can you quote as verified?",
+        "o": ["182,000 CLI downloads in September 2026, from the package registry", "Over 200,000 downloads a month, from the company blog", "2.4 million lifetime downloads, from a conference slide", "9,400 downloads, from the repository page"],
+        "a": 0,
+        "e": ["The registry is the primary source for downloads, and it showed 182,000 for September 2026. The blog's \"over 200,000\" counts mirror traffic, so it is a claim, not a measurement.", "Example: \"About 180,000 a month according to the registry; the blog says more because it counts mirrors\" is a sentence that earns trust. The 9,400 figure confuses downloads with GitHub stars."],
+        "k": "Label every number as verified or claimed. Calibration is a developer relations skill in itself."
+      },
+      {
+        "s": "business", "d": 3,
+        "q": "Why does open core make developer relations a revenue function at Quillmesh?",
+        "o": ["Free CLI adoption is the top of the funnel that leads to paid Cloud", "Developer relations signs Enterprise contracts directly", "Cloud revenue depends on conference sponsorship income", "The CLI is paid and developer relations runs the trials"],
+        "a": 0,
+        "e": ["Engineers adopt the free CLI in one pipeline. Around 5 services, coordinating contracts across teams gets painful, and Cloud becomes the shared source of truth. More activated CLI users means more teams reaching that point.", "Example: a tutorial that gets 500 teams to a first successful `qmc verify` matters more to revenue than a keynote, because activated teams are the ones that later outgrow the free tier."],
+        "k": "Frame your work in funnel terms: activation first, Cloud conversions second."
+      },
+      {
+        "s": "craft", "d": 1,
+        "q": "Which metric best shows that a new `qmc` quickstart worked?",
+        "o": ["Median time from install to first successful `qmc verify`", "Page views of the quickstart", "GitHub stars gained in the launch week", "Social media impressions of the announcement"],
+        "a": 0,
+        "e": ["Activation measures whether developers reached value, not whether they saw the content. Time to first successful verification is the closest proxy for \"it worked for me\".", "Example: at Zelvora you measured median time to first webhook with onboarding telemetry and moved it from 3 days to 40 minutes. The method transfers directly: instrument each step, find where people stall, fix that step."],
+        "k": "Your 3 days to 40 minutes story proves you already work this way."
+      },
+      {
+        "s": "craft", "d": 2,
+        "q": "The community asks for a feature the company plans to keep in Cloud. What is the best first move?",
+        "o": ["Collect the use cases, take them to product with counts, report back openly", "Promise the community the feature will stay free", "Stay silent until product decides", "Ask users to open support tickets instead"],
+        "a": 0,
+        "e": ["Developer relations carries signal both ways without making promises it cannot keep. Aggregated use cases with counts give product something to decide on, and reporting back keeps trust even when the answer is no.", "Example: the August 2026 thread on the compatibility matrix. The outcome (checks stay in the CLI, only the hosted view moves to Cloud) is the kind of line developer relations helps draw and then explains."],
+        "k": "Never promise on behalf of product. Commit to a process and a date for an answer."
+      },
+      {
+        "s": "craft", "d": 2,
+        "q": "Which event is the best fit for the EMEA developer relations budget?",
+        "o": ["A platform engineering conference with a hands-on contract testing workshop", "A general web development festival with a sponsor booth", "A consumer electronics trade show", "A partner's sales kickoff for account managers"],
+        "a": 0,
+        "e": ["The audience that matters is backend and platform engineers running event-driven systems. A workshop produces activated users you can count; a booth produces badge scans.", "Example: a 90-minute workshop where 40 people run `qmc verify` on a sample repository, with a tracked link for later Cloud signups, is measurable. The same money at a general web festival reaches mostly frontend developers who never touch an event broker."],
+        "k": "Pick events where buyers and builders overlap, and measure follow-up, not attendance."
+      },
+      {
+        "s": "craft", "d": 3,
+        "q": "What makes a monthly friction report useful to product teams?",
+        "o": ["Ranked issues with counts, real quotes and a proposed fix", "A full export of every forum post that month", "Only the issues raised by paying customers", "A sentiment score without examples"],
+        "a": 0,
+        "e": ["Product teams act on patterns, not anecdotes. Counts show size, quotes show pain, and a proposed fix lowers the cost of saying yes.", "Example: your Zelvora report listed the top 10 issues every month, and 7 shipped as fixes in 2025. That number is the evidence that the format works."],
+        "k": "Bring a one-page sample of the report format to the interview if you can."
+      },
+      {
+        "s": "you", "d": 1,
+        "q": "They ask: \"Why Quillmesh?\" Which story from your resume fits best?",
+        "o": ["The 2022 schema incident at Brindlebay and the CI check you built", "Your 9 conference talks in 2024 and 2025", "Mentoring 2 junior engineers at Brindlebay", "Your degree in computer science"],
+        "a": 0,
+        "e": ["The Brindlebay incident is their customer's pain, lived and solved: a removed field broke consumers, 6 hours of events were lost, and you built the compatibility check that `qmc` turns into a product.", "Example answer: \"I have been your user without your product. In 2022 I spent a night replaying lost tracking events, then built a homemade version of what `qmc` does. I want to help other teams skip that night.\""],
+        "k": "Lead with this story early: it answers motivation and domain knowledge at once."
+      },
+      {
+        "s": "you", "d": 2,
+        "q": "The interviewer says: \"You have never managed people.\" What is the honest reframe?",
+        "o": ["Agree, show the volunteer team of 4, ask how the role will grow", "Say that mentoring 2 engineers counts as managing a team", "Move the conversation to your conference talks", "Argue that management experience does not matter here"],
+        "a": 0,
+        "e": ["Honesty first: the resume shows no direct reports, so claiming otherwise fails the moment they check. Then offer the closest real evidence: five years leading a volunteer organizing team, where influence without authority is the only tool.", "Example: \"No direct reports yet. For five years I have led four volunteers who did not have to follow me. I would want a clear hiring plan and a manager I can learn from in the first quarter.\" Counting mentoring as management is a stretch interviewers catch."],
+        "k": "Never inflate. A named gap with a plan beats a stretched claim."
+      },
+      {
+        "s": "you", "d": 2,
+        "q": "Which of these numbers matches your resume exactly?",
+        "o": ["Median time to first webhook: from 3 days to 40 minutes", "About 1,000 meetup members", "Over 10,000 stars across your repositories", "More than 50 talks given"],
+        "a": 0,
+        "e": ["Only the time-to-first-webhook figure matches the resume. The meetup has about 600 members, your two repositories have about 1,400 stars together, and you gave 9 talks.", "Example: rounding 600 up to 1,000 sounds harmless, but if the interviewer checks the meetup page, every other number you said loses credibility too."],
+        "k": "Precise, modest numbers convince more than big round ones."
+      },
+      {
+        "s": "you", "d": 3,
+        "q": "Which closing question best shows you understand the business?",
+        "o": ["\"What usually triggers a team to move from the free CLI to Cloud?\"", "\"How many vacation days do you offer?\"", "\"Is the company planning to go public?\"", "\"Could I also work on the frontend?\""],
+        "a": 0,
+        "e": ["It targets the conversion moment that links developer relations to revenue, and the answer tells you which metric you will really be judged on.", "Example follow-up: if they say \"around 5 services\", explain how you would measure the share of active CLI teams that cross that line each month."],
+        "k": "Ask questions whose answers change how you would do the job."
+      }
+    ],
+    "verdicts": [
+      { "min": 0.85, "title": "Ready", "text": "Review only the questions you missed, then rehearse the three STAR stories out loud." },
+      { "min": 0.6, "title": "Solid base", "text": "Reread the traps and the numbers table, then retake the test tomorrow." },
+      { "min": 0, "title": "Not yet", "text": "Go through the guide in study mode, then press Start over and retake the test." }
+    ]
+  },
+
+  "sources": [
+    { "id": "S1", "title": "Quillmesh docs: How qmc works", "url": "https://docs.quillmesh.example/concepts/how-it-works", "accessed": "2026-10-07", "kind": "primary", "publisher": "Quillmesh (fictional)" },
+    { "id": "S2", "title": "Quillmesh Cloud pricing", "url": "https://quillmesh.example/pricing", "accessed": "2026-10-07", "kind": "primary", "publisher": "Quillmesh (fictional)" },
+    { "id": "S3", "title": "qmc source repository: stars, contributors, releases", "url": "https://git.quillmesh.example/quillmesh/qmc", "accessed": "2026-10-07", "kind": "primary", "publisher": "Quillmesh (fictional)" },
+    { "id": "S4", "title": "Package registry statistics for qmc, September 2026", "url": "https://packages.example/qmc/stats", "accessed": "2026-10-07", "kind": "primary", "publisher": "Package registry (fictional)" },
+    { "id": "S5", "title": "Our Series A and what comes next", "url": "https://quillmesh.example/blog/series-a", "accessed": "2026-10-07", "kind": "primary", "publisher": "Quillmesh blog (fictional)" },
+    { "id": "S6", "title": "Why we invested in Quillmesh", "url": "https://fieldstone.example/notes/quillmesh", "accessed": "2026-10-07", "kind": "secondary", "publisher": "Fieldstone Ventures (fictional)" },
+    { "id": "S7", "title": "qmc v3.0 changelog: replay mode", "url": "https://docs.quillmesh.example/changelog/v3-0", "accessed": "2026-10-07", "kind": "primary", "publisher": "Quillmesh (fictional)" },
+    { "id": "S8", "title": "Postmortem: enum narrowing not flagged in v2.7.0", "url": "https://quillmesh.example/blog/postmortem-2-7-0", "accessed": "2026-10-07", "kind": "primary", "publisher": "Quillmesh blog (fictional)" },
+    { "id": "S9", "title": "Community forum: compatibility matrix moving to Cloud", "url": "https://forum.quillmesh.example/t/compat-matrix-cloud", "accessed": "2026-10-07", "kind": "primary", "publisher": "Quillmesh community forum (fictional)" },
+    { "id": "S10", "title": "Job post: Developer Relations Lead, EMEA", "url": "https://jobs.quillmesh.example/devrel-lead-emea", "accessed": "2026-10-08", "kind": "primary", "publisher": "Quillmesh careers (fictional)" },
+    { "id": "S11", "title": "Interview with the Quillmesh CEO", "url": "https://streamledger.example/interviews/quillmesh", "accessed": "2026-10-07", "kind": "secondary", "publisher": "The Stream Ledger (fictional)" },
+    { "id": "S12", "title": "Cloud pricing is moving to per-service", "url": "https://quillmesh.example/blog/pricing-per-service", "accessed": "2026-10-07", "kind": "primary", "publisher": "Quillmesh blog (fictional)" }
+  ]
+}
