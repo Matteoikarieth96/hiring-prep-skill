@@ -119,6 +119,13 @@ Full details: [SECURITY.md](SECURITY.md) and [references/privacy.md](references/
 - Numbers go stale. Rebuild a day or two before the interview (the validator warns after 45 days).
 - The skill prepares you; it does not guarantee what an interviewer will ask.
 
+## More skills
+
+- [evm-dd](https://github.com/Matteoikarieth96/evm-dd-skill): investor-angle due diligence on crypto and EVM projects, with a scored report and an A4 one-pager
+- [beer-can-label](https://github.com/Matteoikarieth96/beer-can-label-skill): full-wrap beer can labels with a 3D can preview
+- [3d-print-design](https://github.com/Matteoikarieth96/3d-print-design-skill): parametric parts for FDM 3D printing, checked before export
+- [whiteboard-video](https://github.com/Matteoikarieth96/whiteboard-video-skill): hand-drawn whiteboard explainer videos with voice-over
+
 ## Licence
 
 MIT, see [LICENSE](LICENSE).
