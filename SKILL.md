@@ -1,6 +1,6 @@
 ---
 name: hiring-prep
-description: Build a job interview prep pack as one self-contained HTML page from a company or project (name and links), the role or job description, and the candidate's resume. The page has a TL;DR, a researched overview (how it works, business model, dated numbers marked verified or claimed, team, funding, competitor table, news, risks, traps), quick Q&A with model answers, a personal playbook built only from the resume, and an exam with open questions and an interactive multiple-choice test with explanations, score and study mode. Use it whenever someone asks for interview prep, help preparing for a job interview, "prepare me for the interview at X", a study guide about a company, a quiz or test about a company or project, or says "preparami al colloquio", "test a crocette", "domande e risposte sul progetto", even if they do not mention a skill. Not for writing a resume or cover letter, and not for a quick factual question about a company (answer that directly).
+description: Build a job interview prep pack as one self-contained HTML page (company research, Q&A, personal playbook from the resume, interactive test) from company, role and resume. Use when someone asks for interview prep, a study guide or a quiz about a company or project, or says "preparami al colloquio", "test a crocette", "domande e risposte sul progetto". Not for writing a resume or cover letter.
 ---
 
 # hiring-prep
@@ -8,6 +8,7 @@ description: Build a job interview prep pack as one self-contained HTML page fro
 Turn three inputs into one page the candidate studies before the interview:
 (a) the company or project, (b) the role, (c) the resume.
 The quality bar: every number dated and sourced, every resume claim true, every quiz question with one defensible answer.
+Not for writing a resume or cover letter, or for a quick factual question about a company (answer that directly).
 
 `SKILL_DIR` is the folder that contains this file. Scripts are Python 3.9+, stdlib only.
 
